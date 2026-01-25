@@ -53,6 +53,7 @@ object CasualChampionships: DedicatedServerModInitializer {
         this.config = CasualConfig.read()
 
         DuelArenas.reload(server)
+        DuelKits.reload(server)
         this.minigames.reload(server)
 
         this.reloadSyncService(server)

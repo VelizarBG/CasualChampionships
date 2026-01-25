@@ -29,7 +29,7 @@ class LobbyDuels(
     private val playerToCheck = WeakHashMap<ServerPlayer, DuelReadyCheck>()
 
     fun createDuel(settings: DuelSettings): DuelMinigame {
-        val duel = DuelMinigame(this.lobby.server, UUID.randomUUID(), settings, settings.getSelectedArena())
+        val duel = DuelMinigame(this.lobby.server, UUID.randomUUID(), settings, settings.getSelectedArena(), settings.getSelectedKit())
         this.duels.add(duel)
         this.modifyDuel(duel)
         return duel

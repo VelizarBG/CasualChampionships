@@ -132,7 +132,7 @@ class DuelSettings(
         value = kits.randomOrNull()?.name ?: ""
 
         for (kit in kits) {
-            option(kit.name, kit.display.named(kit.name.convertCasing(SnakeCase, TitleCase)), kit.name)
+            option(kit.name, kit.display, kit.name)
         }
     }
     var kit by this.register(this.displayableKit)

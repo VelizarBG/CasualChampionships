@@ -239,7 +239,7 @@ class DuelMinigame(
         player.boostHealth(this.duelSettings.health)
         player.resetHealth()
 
-        val stacks = duelKit.lootTable.lootTable.getRandomItems(
+        val stacks = duelKit.lootTable.getRandomItems(
             LootParams.Builder(player.level()).create(ContextKeySet.Builder().build()),
             this.lootSeed
         )

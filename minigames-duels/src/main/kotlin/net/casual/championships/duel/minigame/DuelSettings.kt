@@ -9,10 +9,6 @@ import net.casual.arcade.resources.utils.withMiniFont
 import net.casual.arcade.utils.ItemUtils.hideTooltip
 import net.casual.arcade.utils.ItemUtils.named
 import net.casual.arcade.utils.ItemUtils.potion
-import net.casual.arcade.utils.convertCasing
-import net.casual.arcade.utils.string.PascalCase
-import net.casual.arcade.utils.string.SnakeCase
-import net.casual.arcade.utils.string.TitleCase
 import net.casual.championships.common.items.CasualGuiItems.ARENA
 import net.casual.championships.common.items.CasualGuiItems.FLAG
 import net.casual.championships.common.items.CasualGuiItems.GLOWING
@@ -45,7 +41,7 @@ import kotlin.enums.enumEntries
 
 class DuelSettings(
     private val arenas: Collection<DuelArenasDataModule.ResolvedArenas>,
-    private val kits: Collection<DuelKitsDataModule.ResolvedKit>,
+    private val kits: Collection<DuelKitsDataModule.DuelKit>,
 ): DisplayableSettings(CasualSettings.Defaults(Component.translatable("casual.gui.duel.settings").withMiniFont())) {
     val displayableTeams = bool {
         name = "teams"
@@ -132,7 +128,7 @@ class DuelSettings(
         value = kits.randomOrNull()?.name ?: ""
 
         for (kit in kits) {
-            option(kit.name, kit.display, kit.name)
+            option(kit.name, kit.display.named(kit.name), kit.name)
         }
     }
     var kit by this.register(this.displayableKit)
@@ -142,6 +138,6 @@ class DuelSettings(
         return arena.arenas[this.arenaSize]!!
     }
     fun getSelectedKit(): DuelKitsDataModule.DuelKit {
-        return this.kits.first { it.name == this.kit }.kit
+        return this.kits.first { it.name == this.kit }
     }
 }

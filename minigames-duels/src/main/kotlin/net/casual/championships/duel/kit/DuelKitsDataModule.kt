@@ -19,14 +19,12 @@ class DuelKitsDataModule(
     }
 
     class DuelKit(
-        val name: String,
         val display: ItemStack,
         val lootTable: LootTable,
     ) {
         companion object {
             val CODEC: Codec<DuelKit> = RecordCodecBuilder.create { instance ->
                 instance.group(
-                    Codec.STRING.fieldOf("name").forGetter(DuelKit::name),
                     ItemStack.SINGLE_ITEM_CODEC.fieldOf("display").forGetter(DuelKit::display),
                     LootTable.DIRECT_CODEC.fieldOf("loot_table").forGetter(DuelKit::lootTable)
                 ).apply(instance, DuelKitsDataModule::DuelKit)

@@ -94,10 +94,6 @@ class LobbyDuels(
             val player = context.source.playerOrException
             this.duel.players.transferTo(lobby, player, keepSpectating = false)
 
-            val remaining = if (!this.duel.duelSettings.teams) this.duel.players.playing else this.duel.teams.getPlayingTeams()
-            if (remaining.size <= 1) {
-                this.duel.setPhase(DuelPhase.Complete)
-            }
             return context.source.success("Returning to Lobby...")
         }
     }

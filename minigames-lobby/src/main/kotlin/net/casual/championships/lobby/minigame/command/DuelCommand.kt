@@ -43,10 +43,6 @@ class DuelCommand(private val lobby: LobbyMinigame) : CommandTree {
         val kitBuilder = kitSelection()
         val kitNode = kitBuilder.build()
 
-//        val arenaBuilder = arenaSubtree(kitNode)
-//        val arenaNode = arenaBuilder.build()
-
-
         return CommandTree.buildLiteral("duel") {
             executes {
                 startDuel(it, with = null, kit = null, arena = null)
@@ -82,13 +78,8 @@ class DuelCommand(private val lobby: LobbyMinigame) : CommandTree {
                     }
                 }
             )
-
-
-
-
         }
     }
-
 
     private fun kitSelection(): LiteralArgumentBuilder<CommandSourceStack> =
         CommandTree.buildLiteral("kit") {
@@ -100,17 +91,6 @@ class DuelCommand(private val lobby: LobbyMinigame) : CommandTree {
 
             }
         }
-
-    private fun arenaSubtree(
-        kitNode: CommandNode<CommandSourceStack>
-    ): LiteralArgumentBuilder<CommandSourceStack> =
-        CommandTree.buildLiteral("arena") {
-            argument("arena", StringArgumentType.word()) {
-                suggests { _ -> lobby.modules.get<DuelArenasDataModule>()?.ids() ?: emptyList() }
-                redirect(kitNode)
-            }
-        }
-
 
     private fun startDuel(
         context: CommandContext<CommandSourceStack>,

@@ -101,7 +101,7 @@ class DuelSettings(
         display = ARENA.named(Component.translatable("casual.gui.duel.settings.arena").withMiniFont())
         value = arenas.randomOrNull()?.name ?: ""
         for (arena in arenas) {
-            option(arena.name, arena.display, arena.name)
+            option(arena.name, arena.display.named(arena.name).hideTooltip(DataComponents.ATTRIBUTE_MODIFIERS), arena.name)
         }
     }
     var arena by this.register(this.displayableArena)
@@ -128,7 +128,7 @@ class DuelSettings(
         value = kits.keys.randomOrNull() ?: ""
 
         for ((id, kit) in kits) {
-            option(id, kit.display.named(kit.name), id)
+            option(id, kit.display.named(kit.name).hideTooltip(DataComponents.ATTRIBUTE_MODIFIERS), id)
         }
     }
     var kit by this.register(this.displayableKit)

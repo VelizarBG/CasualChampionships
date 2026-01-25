@@ -20,14 +20,6 @@ import net.casual.arcade.minigame.phase.Phase
 import net.casual.arcade.minigame.settings.MinigameSettings
 import net.casual.arcade.resources.utils.withMiniFont
 import net.casual.arcade.utils.ItemUtils.isOf
-import net.casual.arcade.utils.LootTableUtils
-import net.casual.arcade.utils.LootTableUtils.addItem
-import net.casual.arcade.utils.LootTableUtils.between
-import net.casual.arcade.utils.LootTableUtils.count
-import net.casual.arcade.utils.LootTableUtils.createPool
-import net.casual.arcade.utils.LootTableUtils.durability
-import net.casual.arcade.utils.LootTableUtils.enchant
-import net.casual.arcade.utils.LootTableUtils.exactly
 import net.casual.arcade.utils.PlayerUtils.boostHealth
 import net.casual.arcade.utils.PlayerUtils.clearPlayerInventory
 import net.casual.arcade.utils.PlayerUtils.resetHealth
@@ -41,7 +33,6 @@ import net.casual.arcade.utils.component.suggestCommand
 import net.casual.arcade.utils.math.location.LocationWithLevel.Companion.asLocation
 import net.casual.arcade.utils.teleportTo
 import net.casual.arcade.utils.toKey
-import net.casual.championships.common.items.CasualItems
 import net.casual.championships.common.items.minigame.PlayerHeadItem
 import net.casual.championships.common.items.minigame.recipes.GoldenHeadRecipe
 import net.casual.championships.common.util.CasualGuiUtils
@@ -54,7 +45,6 @@ import net.casual.championships.duel.arena.DuelArenasDataModule
 import net.casual.championships.duel.kit.DuelKitsDataModule
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
@@ -72,9 +62,6 @@ import net.minecraft.world.item.context.DirectionalPlaceContext
 import net.minecraft.world.level.GameType
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes
 import net.minecraft.world.level.storage.loot.LootParams
-import net.minecraft.world.level.storage.loot.LootTable
-import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction.enchantWithLevels
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition.randomChance
 import java.util.*
 import kotlin.random.Random
 

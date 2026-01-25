@@ -20,6 +20,9 @@ class DuelArenasDataModule(
     fun all(): Collection<ResolvedArenas> {
         return this.arenas.values
     }
+    fun ids(): Set<String> {
+        return this.arenas.keys
+    }
 
     data class DuelArena(
         val data: DuelArenaDataModule,

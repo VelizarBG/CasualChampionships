@@ -12,9 +12,9 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.storage.loot.LootTable
 
 class DuelKitsDataModule(
-    private val kits: List<DuelKit>
+    private val kits: Map<String, DuelKit>
 ): MinigameDataModule {
-    fun all(): Collection<DuelKit> {
+    fun all(): Map<String, DuelKit> {
         return this.kits
     }
 
@@ -41,9 +41,9 @@ class DuelKitsDataModule(
 
         override fun get(archive: ReadableArchive, server: MinecraftServer): DuelKitsDataModule {
             val kitIds = archive.parseJson(DUEL_KITS_DATA, Codec.STRING.listOf()).getOrThrow()
-            val kits = List<DuelKit>(kitIds.size) {
-                    val id = kitIds[it]
-                    archive.parseJson("$id.json", DuelKit.CODEC).getOrThrow()
+            val kits = HashMap<String, DuelKit>()
+            for (id in kitIds) {
+                kits[id] = archive.parseJson("$id.json", DuelKit.CODEC).getOrThrow()
             }
             return DuelKitsDataModule(kits)
         }

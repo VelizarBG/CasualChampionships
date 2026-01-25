@@ -41,7 +41,7 @@ import kotlin.enums.enumEntries
 
 class DuelSettings(
     private val arenas: Collection<DuelArenasDataModule.ResolvedArenas>,
-    private val kits: Collection<DuelKitsDataModule.DuelKit>,
+    private val kits: Map<String, DuelKitsDataModule.DuelKit>,
 ): DisplayableSettings(CasualSettings.Defaults(Component.translatable("casual.gui.duel.settings").withMiniFont())) {
     val displayableTeams = bool {
         name = "teams"
@@ -123,12 +123,12 @@ class DuelSettings(
     var arenaSize by this.register(this.displayableArenaSize)
 
     val displayableKit = string {
-        name = "duel_kit"
+        name = "kit"
         display = Items.IRON_SWORD.named(Component.translatable("casual.gui.duel.settings.kit").withMiniFont())
-        value = kits.randomOrNull()?.name ?: ""
+        value = kits.keys.randomOrNull() ?: ""
 
-        for (kit in kits) {
-            option(kit.name, kit.display.named(kit.name), kit.name)
+        for ((id, kit) in kits) {
+            option(id, kit.display.named(kit.name), id)
         }
     }
     var kit by this.register(this.displayableKit)
@@ -138,6 +138,6 @@ class DuelSettings(
         return arena.arenas[this.arenaSize]!!
     }
     fun getSelectedKit(): DuelKitsDataModule.DuelKit {
-        return this.kits.first { it.name == this.kit }
+        return this.kits[this.kit]!!
     }
 }

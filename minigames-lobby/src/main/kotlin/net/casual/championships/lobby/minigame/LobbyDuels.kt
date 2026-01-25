@@ -9,6 +9,7 @@ import net.casual.arcade.events.ListenerRegistry.Companion.register
 import net.casual.arcade.minigame.events.MinigameCloseEvent
 import net.casual.arcade.utils.PlayerUtils.username
 import net.casual.championships.duel.minigame.DuelMinigame
+import net.casual.championships.duel.minigame.DuelPhase
 import net.casual.championships.duel.minigame.DuelSettings
 import net.casual.championships.duel.utils.ReadyCheckSaver
 import net.minecraft.commands.CommandBuildContext
@@ -29,7 +30,7 @@ class LobbyDuels(
     private val playerToCheck = WeakHashMap<ServerPlayer, DuelReadyCheck>()
 
     fun createDuel(settings: DuelSettings): DuelMinigame {
-        val duel = DuelMinigame(this.lobby.server, UUID.randomUUID(), settings, settings.getSelectedArena(), settings.getSelectedKit())
+        val duel = DuelMinigame(this.lobby.server, UUID.randomUUID(), settings, settings.getSelectedArena())
         this.duels.add(duel)
         this.modifyDuel(duel)
         return duel
@@ -92,6 +93,11 @@ class LobbyDuels(
         private fun leaveDuel(context: CommandContext<CommandSourceStack>): Int {
             val player = context.source.playerOrException
             this.duel.players.transferTo(lobby, player, keepSpectating = false)
+
+            val remaining = if (!this.duel.duelSettings.teams) this.duel.players.playing else this.duel.teams.getPlayingTeams()
+            if (remaining.size <= 1) {
+                this.duel.setPhase(DuelPhase.Complete)
+            }
             return context.source.success("Returning to Lobby...")
         }
     }

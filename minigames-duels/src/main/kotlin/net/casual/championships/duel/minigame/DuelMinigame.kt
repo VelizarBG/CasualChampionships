@@ -42,7 +42,6 @@ import net.casual.championships.common.util.CasualPredicates.VISIBLE_OBSERVER_AN
 import net.casual.championships.common.util.RuleUtils
 import net.casual.championships.common.util.casual
 import net.casual.championships.duel.arena.DuelArenasDataModule
-import net.casual.championships.duel.kit.DuelKitsDataModule
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.component.DataComponents
@@ -70,7 +69,6 @@ class DuelMinigame(
     uuid: UUID,
     val duelSettings: DuelSettings,
     val duelArena: DuelArenasDataModule.DuelArena,
-    val duelKit: DuelKitsDataModule.DuelKit
 ): Minigame(server, uuid) {
     override val id = ID
 
@@ -226,7 +224,7 @@ class DuelMinigame(
         player.boostHealth(this.duelSettings.health)
         player.resetHealth()
 
-        val stacks = duelKit.lootTable.getRandomItems(
+        val stacks = duelSettings.getSelectedKit().lootTable.getRandomItems(
             LootParams.Builder(player.level()).create(ContextKeySet.Builder().build()),
             this.lootSeed
         )

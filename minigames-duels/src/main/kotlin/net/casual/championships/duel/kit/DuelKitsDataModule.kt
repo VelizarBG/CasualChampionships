@@ -41,7 +41,7 @@ class DuelKitsDataModule(
             val kitIds = archive.parseJson(DUEL_KITS_DATA, Codec.STRING.listOf()).getOrThrow()
             val kits = HashMap<String, DuelKit>()
             for (id in kitIds) {
-                kits[id] = archive.parseJson("$id.json", DuelKit.CODEC).getOrThrow()
+                kits[id] = archive.parseJson("$id.json", DuelKit.CODEC, server).getOrThrow()
             }
             return DuelKitsDataModule(kits)
         }

@@ -9,6 +9,7 @@ import net.casual.arcade.events.ListenerRegistry.Companion.register
 import net.casual.arcade.minigame.events.MinigameCloseEvent
 import net.casual.arcade.utils.PlayerUtils.username
 import net.casual.championships.duel.minigame.DuelMinigame
+import net.casual.championships.duel.minigame.DuelPhase
 import net.casual.championships.duel.minigame.DuelSettings
 import net.casual.championships.duel.utils.ReadyCheckSaver
 import net.minecraft.commands.CommandBuildContext
@@ -92,6 +93,7 @@ class LobbyDuels(
         private fun leaveDuel(context: CommandContext<CommandSourceStack>): Int {
             val player = context.source.playerOrException
             this.duel.players.transferTo(lobby, player, keepSpectating = false)
+
             return context.source.success("Returning to Lobby...")
         }
     }

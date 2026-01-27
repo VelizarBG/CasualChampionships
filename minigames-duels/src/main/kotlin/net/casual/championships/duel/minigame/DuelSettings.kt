@@ -9,9 +9,6 @@ import net.casual.arcade.resources.utils.withMiniFont
 import net.casual.arcade.utils.ItemUtils.hideTooltip
 import net.casual.arcade.utils.ItemUtils.named
 import net.casual.arcade.utils.ItemUtils.potion
-import net.casual.arcade.utils.convertCasing
-import net.casual.arcade.utils.string.PascalCase
-import net.casual.arcade.utils.string.SnakeCase
 import net.casual.championships.common.items.CasualGuiItems.ARENA
 import net.casual.championships.common.items.CasualGuiItems.FLAG
 import net.casual.championships.common.items.CasualGuiItems.GLOWING
@@ -34,6 +31,7 @@ import net.casual.championships.common.minigame.CasualSettings
 import net.casual.championships.duel.arena.DuelArenaSize
 import net.casual.championships.duel.arena.DuelArenaSize.*
 import net.casual.championships.duel.arena.DuelArenasDataModule
+import net.casual.championships.duel.kit.DuelKitsDataModule
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Items
@@ -42,7 +40,8 @@ import net.minecraft.world.item.component.DyedItemColor
 import kotlin.enums.enumEntries
 
 class DuelSettings(
-    private val arenas: Collection<DuelArenasDataModule.ResolvedArenas>
+    private val arenas: Collection<DuelArenasDataModule.ResolvedArenas>,
+    private val kits: Map<String, DuelKitsDataModule.DuelKit>,
 ): DisplayableSettings(CasualSettings.Defaults(Component.translatable("casual.gui.duel.settings").withMiniFont())) {
     val displayableTeams = bool {
         name = "teams"
@@ -102,7 +101,7 @@ class DuelSettings(
         display = ARENA.named(Component.translatable("casual.gui.duel.settings.arena").withMiniFont())
         value = arenas.randomOrNull()?.name ?: ""
         for (arena in arenas) {
-            option(arena.name, arena.display, arena.name)
+            option(arena.name, arena.display.hideTooltip(DataComponents.ATTRIBUTE_MODIFIERS), arena.name)
         }
     }
     var arena by this.register(this.displayableArena)
@@ -123,21 +122,13 @@ class DuelSettings(
     }
     var arenaSize by this.register(this.displayableArenaSize)
 
-    val displayableKit = enumeration<DuelKit> {
-        name = "duel_kit"
+    val displayableKit = string {
+        name = "kit"
         display = Items.IRON_SWORD.named(Component.translatable("casual.gui.duel.settings.kit").withMiniFont())
-        value = enumEntries<DuelKit>().random()
-        run {
-            val entry = DuelKit.RandomGear
-            val name = entry.name.convertCasing(PascalCase, SnakeCase)
-            val fancyName = entry.getFancyName()
-            option(name, Items.IRON_HELMET.named(fancyName), entry)
-        }
-        run {
-            val entry = DuelKit.MaceCharged
-            val name = entry.name.convertCasing(PascalCase, SnakeCase)
-            val fancyName = entry.getFancyName()
-            option(name, Items.MACE.named(fancyName), entry)
+        value = kits.keys.randomOrNull() ?: ""
+
+        for ((id, kit) in kits) {
+            option(id, kit.display.hideTooltip(DataComponents.ATTRIBUTE_MODIFIERS), id)
         }
     }
     var kit by this.register(this.displayableKit)
@@ -145,5 +136,8 @@ class DuelSettings(
     fun getSelectedArena(): DuelArenasDataModule.DuelArena {
         val arena = this.arenas.first { it.name == this.arena }
         return arena.arenas[this.arenaSize]!!
+    }
+    fun getSelectedKit(): DuelKitsDataModule.DuelKit {
+        return this.kits[this.kit]!!
     }
 }
